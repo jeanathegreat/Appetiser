@@ -15,23 +15,28 @@ class MoviesListViewController: UIViewController {
     @IBOutlet weak private var movieTableView: UITableView!
     let provider = MoyaProvider<ITunesSearchAPI>()
     var movieListArray: [Movie] = []
-    //var listofmovies: [Movie]
-
-    //lazy var movieListArray2 = [Movie]()
-
     
-//    let url = "https://is2-ssl.mzstatic.com/image/thumb/Video3/v4/59/11/e8/5911e892-4fcd-6827-6a0a-7c49b2cdc3d7/source/100x100bb.jpg"
-//    lazy var urlObj = URL(string: url)!
-    //var movieObj: Movie?
+    // MARK: - View State
+    private var state: State = .loading {
+        didSet {
+            switch state {
+            case .ready:
+                movieTableView.reloadData()
+            case .loading:
+                print("loading")
+            case .error:
+                print("error")
+            }
+        }
+    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.prefersLargeTitles = true
         
-        //TODO: what's wrong with this movieList array
-        //createMovieListArray(ofCount: 50)
-//
-        //TODO: check this provider gah
+        state = .loading
+
         provider.request(.search(term: "star", country: "au", media: "movie"))
         {
             [weak self] result in
@@ -41,46 +46,45 @@ class MoviesListViewController: UIViewController {
             case .success(let response):
                 do {
                     let result = try JSONDecoder().decode(ITunesSearchResults<Movie>.self, from: response.data).results
-                    self.movieListArray = result
-                    print(self.movieListArray.count)
-                } catch { print(error) }
-            case .failure(let error):
-                print(error)
+                    self.state = .ready(result)
+                } catch { self.state = .error }
+            case .failure(_):
+                self.state = .error
             }
         }
-            
         }
 
-    func createMovieListArray(ofCount: Int)
-    {
-        for index in 0..<ofCount
-        {
-            //TODO: how to load thumbnail
-            let movie = Movie(trackId: index, trackName: "Movie No. \(index)", trackGenre: "Genre \(index)", trackPrice: Double(index*1000), /*trackImage: urlObj,*/ longDescription: "Long long long long long long long long long assdescription")
-            movieListArray += [movie]
-        }
-        //print(movieListArray)
+}
+
+extension MoviesListViewController {
+    enum State {
+        case loading
+        case ready([Movie])
+        case error
     }
 }
 
 extension MoviesListViewController: UITableViewDataSource, UITableViewDelegate
 {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.movieListArray.count
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: MovieListCell.reuseIdentifier, for: indexPath) as? MovieListCell ?? MovieListCell()
+
+        guard case .ready(let items) = state else { return cell }
+        
+        cell.setMovieListCell(with: items[indexPath.item])
+        
+        return cell
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let movie = self.movieListArray[indexPath.row]
-        //let cell = tableView.dequeueReusableCell(withIdentifier: "MovieListCell") as! MovieListCell
-        let cell = tableView.dequeueReusableCell(withIdentifier: MovieListCell.reuseIdentifier, for: indexPath) as? MovieListCell ?? MovieListCell()
-        
-        cell.setMovieListCell(with: movie)
-        return cell
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard case .ready(let items) = state else { return 0 }
+        return items.count
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        performSegue(withIdentifier: "showMoreMovieDetails", sender: self.movieListArray[indexPath.row])
+        guard case .ready(let items) = state else { return }
+        performSegue(withIdentifier: "showMoreMovieDetails", sender: items[indexPath.item])
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
