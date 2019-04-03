@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class MovieViewController: UIViewController {
 
@@ -18,23 +19,22 @@ class MovieViewController: UIViewController {
     @IBOutlet weak var movieTitle: UILabel!
     
     var movie: Movie?
+    private static let placeHolderImgURL = "http://alittlebitbazar.net/wp-content/uploads/2017/06/wood-blog-placeholder-100x100.jpg"
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationItem.largeTitleDisplayMode = .never
-        // Do any additional setup after loading the view.
         
         setupUI()
     }
     
     func setupUI()
     {
-        //TODO: kingfisher setup image view through URL
-        //movieThumbImg.image = movie?.trackImage
         movieLongDescLabel.text = movie?.longDescription
         movieGenreLabel.text = movie?.primaryGenreName
         moviePriceLabel.text = String(movie!.trackPrice ?? 0)
         movieTitle.text = movie?.trackName
+        let url = URL(string: movie?.artworkUrl100 ?? MovieViewController.placeHolderImgURL)!
+        movieThumbImg.kf.setImage(with: .network(url))
     }
-
 }

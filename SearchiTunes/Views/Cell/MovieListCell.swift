@@ -12,6 +12,7 @@ import Kingfisher
 class MovieListCell: UITableViewCell {
     
     public static let reuseIdentifier = "MovieListCell"
+    private static let placeHolderImgURL = "http://alittlebitbazar.net/wp-content/uploads/2017/06/wood-blog-placeholder-100x100.jpg"
 
     @IBOutlet private weak var movieThumbnailView: UIImageView!
     @IBOutlet private weak var movieTitleLabel: UILabel!
@@ -20,13 +21,11 @@ class MovieListCell: UITableViewCell {
     
     func setMovieListCell(with: Movie)
     {
-        // TODO: how to load thumbnail
-        //movieThumbnailView.image = with.trackImage
         movieTitleLabel.text = with.trackName
         movieGenreLabel.text = with.primaryGenreName
         moviePriceLabel.text = String(with.trackPrice ?? 0)
-        
-        // TODO: how to use load thumbnail
-        //movieThumbnailView.kf.setImage(with: with.trackImage.url,options: [.transition(.fade(0.3))])
+
+        let url = URL(string: with.artworkUrl100 ?? MovieListCell.placeHolderImgURL)!
+        movieThumbnailView.kf.setImage(with: .network(url))
     }
 }
