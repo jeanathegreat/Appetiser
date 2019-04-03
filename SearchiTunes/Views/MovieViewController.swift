@@ -32,7 +32,7 @@ class MovieViewController: UIViewController {
         //TODO: kingfisher setup image view through URL
         //movieThumbImg.image = movie?.trackImage
         movieLongDescLabel.text = movie?.longDescription
-        movieGenreLabel.text = movie?.trackGenre
+        movieGenreLabel.text = movie?.primaryGenreName
         moviePriceLabel.text = String(movie!.trackPrice ?? 0)
         movieTitle.text = movie?.trackName
     }

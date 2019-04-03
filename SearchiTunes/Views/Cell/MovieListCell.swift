@@ -23,7 +23,7 @@ class MovieListCell: UITableViewCell {
         // TODO: how to load thumbnail
         //movieThumbnailView.image = with.trackImage
         movieTitleLabel.text = with.trackName
-        movieGenreLabel.text = with.trackGenre
+        movieGenreLabel.text = with.primaryGenreName
         moviePriceLabel.text = String(with.trackPrice ?? 0)
         
         // TODO: how to use load thumbnail

@@ -13,7 +13,7 @@ struct Movie: Decodable
 {
     let trackId: Int
     let trackName: String
-    let trackGenre: String?
+    let primaryGenreName: String
     let trackPrice: Double?
     let longDescription: String
     
