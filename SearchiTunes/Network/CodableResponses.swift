@@ -8,7 +8,6 @@
 
 import Foundation
 
-struct ITunesSearchResults<T: Codable>: Codable {
+struct ITunesSearchResults<T: Decodable>: Decodable {
     let results: [T]
 }
-

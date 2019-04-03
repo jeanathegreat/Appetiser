@@ -29,34 +29,25 @@ class MoviesListViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         
         //TODO: what's wrong with this movieList array
-        createMovieListArray(ofCount: 50)
-        
+        //createMovieListArray(ofCount: 50)
+//
         //TODO: check this provider gah
-        provider.request(.search(term: "star", country: "au", media: "movie")) { [weak self] result in
+        provider.request(.search(term: "star", country: "au", media: "movie"))
+        {
+            [weak self] result in
             guard let self = self else { return }
             
             switch result {
             case .success(let response):
                 do {
-                    print(try response.mapJSON())
-//                    let jsonObj = try response.mapJSON()
-//                    if let movieObj = try? JSONDecoder().decode(Movie.self, from: response.data)
-//                    {
-//                        print(movieObj.longDescription)
-//                    }
-                    
-//                    let obj = try response.map(ITunesSearchResults<MovieResults>.self)//walay sulod does nothing
-//                    print("Response is: \(obj)")
-//prints nothing
-                } catch {
-                    //self.state = .error
-                }
+                    let result = try JSONDecoder().decode(ITunesSearchResults<Movie>.self, from: response.data).results
+                    self.movieListArray = result
+                    print(self.movieListArray.count)
+                } catch { print(error) }
             case .failure(let error):
-                //self.state = .error
                 print(error)
             }
         }
-        
             
         }
 
@@ -65,7 +56,7 @@ class MoviesListViewController: UIViewController {
         for index in 0..<ofCount
         {
             //TODO: how to load thumbnail
-            let movie = Movie(trackId: index, trackName: "Movie No. \(index)", trackGenre: "Genre \(index)", trackPrice: index*1000, /*trackImage: urlObj,*/ longDescription: "Long long long long long long long long long assdescription")
+            let movie = Movie(trackId: index, trackName: "Movie No. \(index)", trackGenre: "Genre \(index)", trackPrice: Double(index*1000), /*trackImage: urlObj,*/ longDescription: "Long long long long long long long long long assdescription")
             movieListArray += [movie]
         }
         //print(movieListArray)
@@ -75,11 +66,11 @@ class MoviesListViewController: UIViewController {
 extension MoviesListViewController: UITableViewDataSource, UITableViewDelegate
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return movieListArray.count
+        return self.movieListArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let movie = movieListArray[indexPath.row]
+        let movie = self.movieListArray[indexPath.row]
         //let cell = tableView.dequeueReusableCell(withIdentifier: "MovieListCell") as! MovieListCell
         let cell = tableView.dequeueReusableCell(withIdentifier: MovieListCell.reuseIdentifier, for: indexPath) as? MovieListCell ?? MovieListCell()
         
@@ -89,7 +80,7 @@ extension MoviesListViewController: UITableViewDataSource, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        performSegue(withIdentifier: "showMoreMovieDetails", sender: movieListArray[indexPath.row])
+        performSegue(withIdentifier: "showMoreMovieDetails", sender: self.movieListArray[indexPath.row])
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
