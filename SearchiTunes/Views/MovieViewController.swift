@@ -31,10 +31,10 @@ class MovieViewController: UIViewController {
     func setupUI()
     {
         movieLongDescLabel.text = movie?.longDescription
-        movieGenreLabel.text = movie?.primaryGenreName
+        movieGenreLabel.text = movie?.trackGenre
         moviePriceLabel.text = String(movie!.trackPrice ?? 0)
         movieTitle.text = movie?.trackName
-        let url = URL(string: movie?.artworkUrl100 ?? MovieViewController.placeHolderImgURL)!
+        let url = URL(string: movie?.imageURL ?? MovieViewController.placeHolderImgURL)!
         movieThumbImg.kf.setImage(with: .network(url))
     }
 }

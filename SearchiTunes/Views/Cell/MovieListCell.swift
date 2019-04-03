@@ -22,10 +22,10 @@ class MovieListCell: UITableViewCell {
     func setMovieListCell(with: Movie)
     {
         movieTitleLabel.text = with.trackName
-        movieGenreLabel.text = with.primaryGenreName
+        movieGenreLabel.text = with.trackGenre
         moviePriceLabel.text = String(with.trackPrice ?? 0)
 
-        let url = URL(string: with.artworkUrl100 ?? MovieListCell.placeHolderImgURL)!
+        let url = URL(string: with.imageURL ?? MovieListCell.placeHolderImgURL)!
         movieThumbnailView.kf.setImage(with: .network(url))
     }
 }

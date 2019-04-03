@@ -9,22 +9,22 @@
 import Foundation
 import UIKit
 
-struct Movie: Decodable
+struct Movie: Codable
 {
     let trackId: Int
     let trackName: String
-    let primaryGenreName: String
+    let trackGenre: String
     let trackPrice: Double?
     let longDescription: String
-    let artworkUrl100: String?
+    let imageURL: String?
     
-    private enum MovieCodingKeys: String, CodingKey
+    private enum CodingKeys: String, CodingKey
     {
         case trackId
         case trackName
         case trackGenre = "primaryGenreName"
         case trackPrice
-        case artworkUrl100
+        case imageURL = "artworkUrl100"
         case longDescription
     }
 }
