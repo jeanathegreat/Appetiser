@@ -16,6 +16,7 @@ struct Movie: Decodable
     let primaryGenreName: String
     let trackPrice: Double?
     let longDescription: String
+    let artworkUrl100: String?
     
     private enum MovieCodingKeys: String, CodingKey
     {
@@ -23,14 +24,7 @@ struct Movie: Decodable
         case trackName
         case trackGenre = "primaryGenreName"
         case trackPrice
-        //case trackImage
+        case artworkUrl100
         case longDescription
     }
-
-}
-
-struct MovieResults
-{
-    let resultCount: Int
-    let movieResults: [Movie]
 }
