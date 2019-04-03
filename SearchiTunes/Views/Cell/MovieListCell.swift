@@ -24,7 +24,7 @@ class MovieListCell: UITableViewCell {
         //movieThumbnailView.image = with.trackImage
         movieTitleLabel.text = with.trackName
         movieGenreLabel.text = with.trackGenre
-        moviePriceLabel.text = String(with.trackPrice)
+        moviePriceLabel.text = String(with.trackPrice ?? 0)
         
         // TODO: how to use load thumbnail
         //movieThumbnailView.kf.setImage(with: with.trackImage.url,options: [.transition(.fade(0.3))])

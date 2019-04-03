@@ -14,9 +14,15 @@ class MoviesListViewController: UIViewController {
 
     @IBOutlet weak private var movieTableView: UITableView!
     let provider = MoyaProvider<ITunesSearchAPI>()
-    var movieListArray = [Movie]()
+    var movieListArray: [Movie] = []
+    //var listofmovies: [Movie]
+
+    //lazy var movieListArray2 = [Movie]()
+
     
-    let url = "https://is2-ssl.mzstatic.com/image/thumb/Video3/v4/59/11/e8/5911e892-4fcd-6827-6a0a-7c49b2cdc3d7/source/100x100bb.jpg"
+//    let url = "https://is2-ssl.mzstatic.com/image/thumb/Video3/v4/59/11/e8/5911e892-4fcd-6827-6a0a-7c49b2cdc3d7/source/100x100bb.jpg"
+//    lazy var urlObj = URL(string: url)!
+    //var movieObj: Movie?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,15 +38,22 @@ class MoviesListViewController: UIViewController {
             switch result {
             case .success(let response):
                 do {
-                    //print(try response.mapJSON())
-                    let jsonObj = try response.mapJSON()
-                    print(jsonObj)
+                    print(try response.mapJSON())
+//                    let jsonObj = try response.mapJSON()
+//                    if let movieObj = try? JSONDecoder().decode(Movie.self, from: response.data)
+//                    {
+//                        print(movieObj.longDescription)
+//                    }
+                    
+//                    let obj = try response.map(ITunesSearchResults<MovieResults>.self)//walay sulod does nothing
+//                    print("Response is: \(obj)")
+//prints nothing
                 } catch {
                     //self.state = .error
                 }
-            case .failure:
+            case .failure(let error):
                 //self.state = .error
-                print("error")
+                print(error)
             }
         }
         
@@ -52,7 +65,7 @@ class MoviesListViewController: UIViewController {
         for index in 0..<ofCount
         {
             //TODO: how to load thumbnail
-            let movie = Movie(trackId: index, trackName: "Movie No. \(index)", trackGenre: "Genre \(index)", trackPrice: index*1000, /*trackImage: url,*/ longDescription: "Long long long long long long long long long assdescription")
+            let movie = Movie(trackId: index, trackName: "Movie No. \(index)", trackGenre: "Genre \(index)", trackPrice: index*1000, /*trackImage: urlObj,*/ longDescription: "Long long long long long long long long long assdescription")
             movieListArray += [movie]
         }
         //print(movieListArray)

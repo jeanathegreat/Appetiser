@@ -29,10 +29,11 @@ class MovieViewController: UIViewController {
     
     func setupUI()
     {
-        //movieThumbImg.image = movie?.trackImage 
+        //TODO: kingfisher setup image view through URL
+        //movieThumbImg.image = movie?.trackImage
         movieLongDescLabel.text = movie?.longDescription
         movieGenreLabel.text = movie?.trackGenre
-        moviePriceLabel.text = String(movie!.trackPrice)
+        moviePriceLabel.text = String(movie!.trackPrice ?? 0)
         movieTitle.text = movie?.trackName
     }
 
