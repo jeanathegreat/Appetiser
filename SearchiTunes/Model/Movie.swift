@@ -9,22 +9,33 @@
 import Foundation
 import UIKit
 
-class Movie
+struct Movie: Codable
 {
     var trackId: Int
     var trackName: String
     var trackGenre: String
     var trackPrice: Int
-    var trackImage: UIImage
+    //var trackImage: Thumbnail
     var longDescription: String
     
-    init(trackId: Int, trackName: String, trackGenre: String, trackPrice: Int, trackImage: UIImage, longDescription: String)
+    init(trackId: Int, trackName: String, trackGenre: String, trackPrice: Int, /* trackImage: Thumbnail, */ longDescription: String)
     {
         self.trackId = trackId
         self.trackName = trackName
         self.trackGenre = trackGenre
         self.trackPrice = trackPrice
         self.longDescription = longDescription
-        self.trackImage = trackImage
+        //self.trackImage = trackImage
     }
 }
+
+//extension Movie {
+//    struct Thumbnail: Codable {
+//        let path: String
+//        let `extension`: String
+//        
+//        var url: URL {
+//            return URL(string: path + "." + `extension`)!
+//        }
+//    }
+//}

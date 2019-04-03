@@ -20,9 +20,13 @@ class MovieListCell: UITableViewCell {
     
     func setMovieListCell(with: Movie)
     {
-        movieThumbnailView.image = with.trackImage
+        // TODO: how to load thumbnail
+        //movieThumbnailView.image = with.trackImage
         movieTitleLabel.text = with.trackName
         movieGenreLabel.text = with.trackGenre
         moviePriceLabel.text = String(with.trackPrice)
+        
+        // TODO: how to use load thumbnail
+        //movieThumbnailView.kf.setImage(with: with.trackImage.url,options: [.transition(.fade(0.3))])
     }
 }

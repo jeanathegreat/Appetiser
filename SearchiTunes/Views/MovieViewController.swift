@@ -29,7 +29,7 @@ class MovieViewController: UIViewController {
     
     func setupUI()
     {
-        movieThumbImg.image = movie?.trackImage
+        //movieThumbImg.image = movie?.trackImage 
         movieLongDescLabel.text = movie?.longDescription
         movieGenreLabel.text = movie?.trackGenre
         moviePriceLabel.text = String(movie!.trackPrice)

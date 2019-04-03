@@ -7,51 +7,56 @@
 //
 
 import UIKit
+import Moya
 import Alamofire
 
 class MoviesListViewController: UIViewController {
 
-    @IBOutlet weak var movieTableView: UITableView!
+    @IBOutlet weak private var movieTableView: UITableView!
+    let provider = MoyaProvider<ITunesSearchAPI>()
     var movieListArray = [Movie]()
+    
+    let url = "https://is2-ssl.mzstatic.com/image/thumb/Video3/v4/59/11/e8/5911e892-4fcd-6827-6a0a-7c49b2cdc3d7/source/100x100bb.jpg"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         self.navigationController?.navigationBar.prefersLargeTitles = true
+        
+        //TODO: what's wrong with this movieList array
         createMovieListArray(ofCount: 50)
-        movieTableView.delegate = self
-        movieTableView.dataSource = self 
-    }
+        
+        //TODO: check this provider gah
+        provider.request(.search(term: "star", country: "au", media: "movie")) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let response):
+                do {
+                    //print(try response.mapJSON())
+                    let jsonObj = try response.mapJSON()
+                    print(jsonObj)
+                } catch {
+                    //self.state = .error
+                }
+            case .failure:
+                //self.state = .error
+                print("error")
+            }
+        }
+        
+            
+        }
 
     func createMovieListArray(ofCount: Int)
     {
         for index in 0..<ofCount
         {
-            let movie = Movie(trackId: index, trackName: "Movie No. \(index)", trackGenre: "Genre \(index)", trackPrice: index*1000, trackImage: #imageLiteral(resourceName: "placeholder"), longDescription: "Long long long long long long long long long assdescription")
+            //TODO: how to load thumbnail
+            let movie = Movie(trackId: index, trackName: "Movie No. \(index)", trackGenre: "Genre \(index)", trackPrice: index*1000, /*trackImage: url,*/ longDescription: "Long long long long long long long long long assdescription")
             movieListArray += [movie]
         }
-        print(movieListArray)
+        //print(movieListArray)
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
-        
-        //        secondViewController.detailedMovie.trackGenre = sender.trackGenre
-        //        secondViewController.detailedMovie.trackName = sender.trackName
-        //        secondViewController.detailedMovie.trackPrice = sender.trackPrice
-        //        secondViewController.detailedMovie.trackImage = sender.trackImage
-        //        secondViewController.detailedMovie.longDescription = sender.longDescription
-//        let secondViewController = segue.destination as! MovieViewController
-//        secondViewController.movieGenre = sender.trackGenre
-//        secondViewController.movieName = sender.trackName
-//        secondViewController.moviePrice = sender.trackPrice
-//        secondViewController.movieImg = sender.trackImage
-        
-        if segue.identifier == "showMoreMovieDetails" {
-            let secondVC = segue.destination as! MovieViewController
-            secondVC.movie = sender as? Movie
-        }
-    }
-
 }
 
 extension MoviesListViewController: UITableViewDataSource, UITableViewDelegate
@@ -74,4 +79,10 @@ extension MoviesListViewController: UITableViewDataSource, UITableViewDelegate
         performSegue(withIdentifier: "showMoreMovieDetails", sender: movieListArray[indexPath.row])
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+        if segue.identifier == "showMoreMovieDetails" {
+            let secondVC = segue.destination as! MovieViewController
+            secondVC.movie = sender as? Movie
+        }
+    }
 }
