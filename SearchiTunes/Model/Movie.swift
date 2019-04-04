@@ -9,22 +9,30 @@
 import Foundation
 import UIKit
 
+//MARK: Movie objecto to map data received from JSON object
 struct Movie: Codable
 {
-    let trackId: Int
-    let trackName: String
-    let trackGenre: String
-    let trackPrice: Double?
-    let longDescription: String
-    let imageURL: String?
+    //MARK: Movie ID
+    public var id: Int
+    //MARK: Movie title
+    public var name: String
+    //MARK: Movie genre
+    public var genre: String
+    //MARK: Movie price
+    public var price: Double?
+    //MARK: Long description
+    public var description: String
+    //MARK: Movie image URL
+    public var imageURL: String?
     
+    // MARK: For decoding JSON object
     private enum CodingKeys: String, CodingKey
     {
-        case trackId
-        case trackName
-        case trackGenre = "primaryGenreName"
-        case trackPrice
+        case id = "trackId"
+        case name = "trackName"
+        case genre = "primaryGenreName"
+        case price = "trackPrice"
+        case description = "longDescription"
         case imageURL = "artworkUrl100"
-        case longDescription
     }
 }
