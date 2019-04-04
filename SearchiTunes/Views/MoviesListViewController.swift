@@ -8,13 +8,11 @@
 
 import UIKit
 import Moya
-import Alamofire
 
 class MoviesListViewController: UIViewController {
 
     @IBOutlet weak private var movieTableView: UITableView!
     let provider = MoyaProvider<ITunesSearchAPI>()
-    var movieListArray: [Movie] = []
     
     // MARK: - View State
     private var state: State = .loading {
@@ -37,6 +35,7 @@ class MoviesListViewController: UIViewController {
         
         state = .loading
 
+        //MARK: Get request done through Moya network framework
         provider.request(.search(term: "star", country: "au", media: "movie"))
         {
             [weak self] result in
@@ -56,6 +55,7 @@ class MoviesListViewController: UIViewController {
 
 }
 
+// MARK: ViewController states
 extension MoviesListViewController {
     enum State {
         case loading
@@ -64,6 +64,8 @@ extension MoviesListViewController {
     }
 }
 
+// MARK: TableViewDelegates and TableViewDataSource
+// Populates and depopulates table cell in tableview according to data in Movie object
 extension MoviesListViewController: UITableViewDataSource, UITableViewDelegate
 {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
