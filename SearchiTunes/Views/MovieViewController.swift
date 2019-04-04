@@ -9,16 +9,17 @@
 import UIKit
 import Kingfisher
 
+
+// MARK: Sets up the MovieViewController with data passed by the master view controller (MoviesListViewController) via the object Movie
 class MovieViewController: UIViewController {
 
-    //var detailedMovie = Movie(trackId: 4, trackName: "Stardust", trackGenre: "Romance", trackPrice: 456789, trackImage: #imageLiteral(resourceName: "placeholder"), longDescription: "The quick brown fox jumps over the lazy dog repeat 100x so that this will become long.")
-    @IBOutlet weak var movieThumbImg: UIImageView!
-    @IBOutlet weak var movieGenreLabel: UILabel!
-    @IBOutlet weak var moviePriceLabel: UILabel!
-    @IBOutlet weak var movieTitle: UILabel!
-    @IBOutlet weak var movieLongDescLabel: UITextView!
+    @IBOutlet private weak var movieThumbImg: UIImageView!
+    @IBOutlet private weak var movieGenreLabel: UILabel!
+    @IBOutlet private weak var moviePriceLabel: UILabel!
+    @IBOutlet private weak var movieTitle: UILabel!
+    @IBOutlet private weak var movieLongDescLabel: UITextView!
     
-    var movie: Movie?
+    public var movie: Movie?
     private static let placeHolderImgURL = "http://alittlebitbazar.net/wp-content/uploads/2017/06/wood-blog-placeholder-100x100.jpg"
 
     override func viewDidLoad() {
@@ -29,12 +30,13 @@ class MovieViewController: UIViewController {
         setupUI()
     }
     
-    func setupUI()
+    // MARK: Setups various UIView elements with data obtained from Movie object
+    private func setupUI()
     {
-        movieLongDescLabel.text = movie?.longDescription
-        movieGenreLabel.text = movie?.trackGenre
-        moviePriceLabel.text = String(movie!.trackPrice ?? 0)
-        movieTitle.text = movie?.trackName
+        movieLongDescLabel.text = movie?.description
+        movieGenreLabel.text = movie?.genre
+        moviePriceLabel.text = String(movie!.price ?? 0)
+        movieTitle.text = movie?.name
         let url = URL(string: movie?.imageURL ?? MovieViewController.placeHolderImgURL)!
         movieThumbImg.kf.setImage(with: .network(url))
     }

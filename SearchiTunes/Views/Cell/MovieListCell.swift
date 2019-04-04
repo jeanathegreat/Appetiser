@@ -19,11 +19,11 @@ class MovieListCell: UITableViewCell {
     @IBOutlet private weak var movieGenreLabel: UILabel!
     @IBOutlet private weak var moviePriceLabel: UILabel!
     
-    func setMovieListCell(with: Movie)
+    public func setMovieListCell(with: Movie)
     {
-        movieTitleLabel.text = with.trackName
-        movieGenreLabel.text = with.trackGenre
-        moviePriceLabel.text = String(with.trackPrice ?? 0)
+        movieTitleLabel.text = with.name
+        movieGenreLabel.text = with.genre
+        moviePriceLabel.text = String(with.price ?? 0)
 
         let url = URL(string: with.imageURL ?? MovieListCell.placeHolderImgURL)!
         movieThumbnailView.kf.setImage(with: .network(url))
