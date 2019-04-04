@@ -11,6 +11,7 @@ import Moya
 
 // https://itunes.apple.com/search?term=star&amp;country=au&amp;media=movie
 
+// MARK: Moya network implementation for search request to iTunes Search API
 public enum ITunesSearchAPI
 {
     case search(term: String, country: String, media: String)

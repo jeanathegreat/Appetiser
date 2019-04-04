@@ -8,6 +8,7 @@
 
 import Foundation
 
+//MARK: Codable struct to return JSON array called results
 struct ITunesSearchResults<T: Codable>: Codable {
     let results: [T]
 }
